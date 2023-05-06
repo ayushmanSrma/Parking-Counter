@@ -14,6 +14,7 @@ width, height = 107, 48 # these are the ht and wdt of rectangle
 def checkParkPos(imgPro):
     spaceCounter =0
     occCount = 0
+    free =1
 
     for pos in posList:
         x,y = pos  #to store the pos of rectangle boxes in x&y
@@ -36,7 +37,9 @@ def checkParkPos(imgPro):
                                                                                      #boxes appear in the cropped img    
         cvzone.putTextRect(img,f'free : {spaceCounter}/{len(posList)}',(100,50),scale = 2,offset=15,thickness=3,colorR=(0,200,0))
 
-        cvzone.putTextRect(img,f'Occupied : {occCount}/{len(posList)}',(350,50),scale = 2,offset=15,thickness=3,colorR=(0,0,255))                                                                                     
+        cvzone.putTextRect(img,f'Occupied : {occCount}/{len(posList)}',(350,50),scale = 2,offset=15,thickness=3,colorR=(0,0,255))
+
+                                                                                                         
                                                                                      
 
 
