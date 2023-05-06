@@ -12,11 +12,33 @@ with open('CarParkPos','rb') as f:
 width, height = 107, 48 # these are the ht and wdt of rectangle
 
 def checkParkPos(imgPro):
+    spaceCounter =0
+    occCount = 0
+
     for pos in posList:
         x,y = pos  #to store the pos of rectangle boxes in x&y
         imgCrop = imgPro[y:y+height,x:x+width]  #cropping the img from x,y to x+width,y+height 
-        cv2.imshow(str(x*y),imgCrop)  #to show the cropped img with name as coordinates to each img
+        #cv2.imshow(str(x*y),imgCrop)  #to show the cropped img with name as coordinates to each img
         count = cv2.countNonZero(imgCrop) #for counting the non-zero pixels in the imgCrop
+        cvzone.putTextRect(img,str(count),(x,y+height-3),scale = 1,offset=0,thickness=2,colorR=(0,0,255))
+
+
+        if count <850 :
+            color = (0,255,0) #red color
+            thickness = 5
+            spaceCounter +=1
+        else :
+            color = (0,0,255) #green color
+            thickness = 2
+            occCount +=1
+
+        cv2.rectangle(img, pos,(pos[0] + width, pos[1] + height), color, thickness) #this is moved down so not to make the
+                                                                                     #boxes appear in the cropped img    
+        cvzone.putTextRect(img,f'free : {spaceCounter}/{len(posList)}',(100,50),scale = 2,offset=15,thickness=3,colorR=(0,200,0))
+
+        cvzone.putTextRect(img,f'Occupied : {occCount}/{len(posList)}',(350,50),scale = 2,offset=15,thickness=3,colorR=(0,0,255))                                                                                     
+                                                                                     
+
 
 
 while True:
@@ -36,13 +58,11 @@ while True:
 
     checkParkPos(imgDilate)
 
-    for pos in posList:
-        cv2.rectangle(img, pos,(pos[0] + width, pos[1] + height), (255, 0, 255), 2) #this is moved down so not to make the
-                                                                                     #boxes appear in the cropped img
+    #for pos in posList:
     cv2.imshow('Image',img)  #to show the video
-    cv2.imshow("ImageBlur",imgBlur)# to show the grayed & blured video
-    cv2.imshow('ImgThres',imgThreshold)#to show the threshold image video
-    cv2.imshow('ImgMedian',imgMedian)
-    cv2.imshow('ImgDilate',imgDilate)
+    # cv2.imshow("ImageBlur",imgBlur)# to show the grayed & blured video
+    # cv2.imshow('ImgThres',imgThreshold)#to show the threshold image video
+    # cv2.imshow('ImgMedian',imgMedian)
+    # cv2.imshow('ImgDilate',imgDilate)
     cv2.waitKey(1) #video speed control
     
